@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BookTourismClassLibrary.CompanyManagement.Company>
+@{
+    ViewBag.Title = "CompanyManagment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h3 class="list-group-item-heading text-center notextselect">Company Managment</h3>
+<div class="col-lg-9">
+    <h4>List Of Companies</h4>
+    <p>
+        @Html.ActionLink("Create New", "AddCompany", "Company")
+    </p>
+    @if (ViewBag.message != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Error!</strong> @ViewBag.message
+        </div>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacebookPageUrl)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (item.FacebookPageUrl != null)
+                    {
+                        <a href="@item.FacebookPageUrl" target="_blank">@item.FacebookPageUrl</a>
+                    }
+                    else
+                    {
+                        <p>No facebook Page</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditCompany", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "CompanyDetails", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteCompany", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

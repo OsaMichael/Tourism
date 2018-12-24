@@ -1,0 +1,22 @@
+﻿@using BookTourismWeb.Models
+@using BookTourismClassLibrary.HistoryManagement
+@{
+    ViewBag.Title = "Tourism!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<TourSummaryModel> tours = ViewBag.indexTours;
+    List<History> history = ViewBag.indexhistory;
+}
+<div class="row">
+    @Html.Partial("~/Views/Shared/_TourSummaryView.cshtml", tours)
+</div>
+
+<br />
+<hr style="border: solid 1px darkgray" />
+<div class="row">
+    <h3 class="text-center"><a href="@Url.Action("Pakistan")" style="text-decoration: none">Learn About Pakistan</a></h3>
+    <hr />
+    @foreach (var h in history)
+    {
+        @Html.Partial("~/Views/Shared/_HistorySummaryView.cshtml", h)
+    }
+</div>

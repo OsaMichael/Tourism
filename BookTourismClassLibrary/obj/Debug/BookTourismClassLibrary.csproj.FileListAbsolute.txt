@@ -1,0 +1,12 @@
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\BookTourismClassLibrary.dll.config
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\BookTourismClassLibrary.dll
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\BookTourismClassLibrary.pdb
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\EntityFramework.dll
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\EntityFramework.xml
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\obj\Debug\BookTourismClassLibrary.dll
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\obj\Debug\BookTourismClassLibrary.pdb
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\obj\Debug\BookTourismClassLibrary.Migrations.addinitial.resources
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\obj\Debug\BookTourismClassLibrary.csproj.GenerateResource.Cache
+c:\users\michael\documents\visual studio 2015\Projects\Tourism\BookTourismClassLibrary\obj\Debug\BookTourismClassLibrary.csprojResolveAssemblyReference.cache

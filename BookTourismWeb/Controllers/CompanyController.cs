@@ -1,0 +1,186 @@
+﻿using BookTourismClassLibrary;
+using BookTourismClassLibrary.CompanyManagement;
+using BookTourismClassLibrary.LocationManagement;
+using BookTourismClassLibrary.UserManagement;
+using BookTourismWeb.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace BookTourismWeb.Controllers
+{
+    public class CompanyController : Controller
+    {
+        // GET: Company
+        public ActionResult CompanyManagment()
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Home", act = "Index" });
+            }
+            List<Company> companies = new CompanyHandler().GetAllCompanies();
+
+            ViewBag.message = TempData["message"];
+
+            return View(companies);
+        }
+
+        // GET: Company/Details/
+        public ActionResult CompanyDetails(int id)
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            Company company = new CompanyHandler().GetCompanybyId(id);
+            return View(company);
+        }
+
+        // GET: Company/Create
+        public ActionResult AddCompany()
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            LocationHandler lh = new LocationHandler();
+            ViewBag.CountryList = ModelHelper.ToSelectItemList(lh.GetCountries());
+           // ViewBag.voters = new SelectList(ModelHelper.ToSelectItemList(lh.GetCountries), "VoterId", "StaffName");
+            return View();
+        }
+
+        // POST: Company/Create
+        [HttpPost]
+        public ActionResult AddCompany(FormCollection fdata)
+        {
+
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            LocationHandler lh = new LocationHandler();
+            ViewBag.CountryList = ModelHelper.ToSelectItemList(lh.GetCountries());
+            try
+            {
+                Company c = new Company
+                {
+                    Name = fdata["Name"],
+                    Description = fdata["Description"],
+                    FacebookPageUrl = fdata["FacebookPageUrl"],
+                    City = new City { Id = Convert.ToInt32(fdata["CityList"]) }
+                };
+                long numb = DateTime.Now.Ticks;
+                int count = 0;
+                foreach (string fname in Request.Files)
+                {
+                    HttpPostedFileBase file = Request.Files[fname];
+                    if (!string.IsNullOrEmpty(file?.FileName))
+                    {
+                        string url = "/ImagesData/CompanyImages/" + numb + "_" + ++count + file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal));
+                        string path = Request.MapPath(url);
+                        file.SaveAs(path);
+                        c.ImageUrl = url;
+                    }
+                    else
+                    {
+                        string url = "/ImagesData/CompanyImages/noimage2.jpg";
+                        c.ImageUrl = url;
+                    }
+                }
+                new CompanyHandler().AddCompany(c);
+                return RedirectToAction("CompanyManagment");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Company/Edit/
+        public ActionResult EditCompany(int id)
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            Company company = new CompanyHandler().GetCompanybyId(id);
+            return View(company);
+        }
+
+        // POST: Company/Edit/5
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EditCompany(Company company)
+        {
+            try
+            {
+                User u = (User)Session[WebUtil.CURRENT_USER];
+                if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+                {
+                    return RedirectToAction("Login", "User", new { ctl = "Home", act = "Index" });
+                }
+
+                if (ModelState.IsValid)
+                {
+                    new CompanyHandler().UpdateCompany(company);
+                    return RedirectToAction("CompanyManagment");
+                }
+                return View(company);
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Company/Delete/5
+        public ActionResult DeleteCompany(int id)
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            Company company = new CompanyHandler().GetCompanybyId(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            return View(company);
+        }
+
+        // POST: Company/Delete/5
+        [HttpPost, ActionName("DeleteCompany")]
+        public ActionResult DeleteCompanyConfirmed(int id)
+        {
+            User u = (User)Session[WebUtil.CURRENT_USER];
+            if (!(u != null && u.IsInRole(WebUtil.ADMIN_ROLE)))
+            {
+                return RedirectToAction("Login", "User", new { ctl = "Admin", act = "AdminPanel" });
+            }
+            try
+            {
+                Company company = new CompanyHandler().GetCompanybyId(id);
+                new CompanyHandler().DeleteCompany(company);
+                return RedirectToAction("CompanyManagment");
+            }
+            catch
+            {
+                ViewBag.message = "Cannot Delete. This Company Is Assigned To Some Tour. Delete That Tour First";
+                TempData["message"] = ViewBag.message;
+                return RedirectToAction("CompanyManagment");
+            }
+        }
+
+        public int GetCompanyCount()
+        {
+            return new CompanyHandler().GetCompanyCount();
+        }
+    }
+}

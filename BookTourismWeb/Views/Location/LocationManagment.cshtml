@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BookTourismClassLibrary.LocationManagement.Country>
+@{
+    ViewBag.Title = "🌎 Location Managment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h3 class="list-group-item-heading text-center notextselect">Location Managment</h3>
+<div class="col-lg-9">
+    <h4>List Of Countries</h4>
+    <p>@Html.ActionLink("Add New Country", "AddCountry")</p>
+    @if (ViewBag.message != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Error!</strong> @ViewBag.message
+        </div>
+    }
+    <table id="datatable" class="table table-condensed table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CountryCode)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.CountryCode)
+                    </td>
+                    <td class="text-center">
+                        @Html.ActionLink(" List Of Cities", "CityList", new { id = item.Id }) |
+                        @Html.ActionLink("Delete Country", "DeleteCountry", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

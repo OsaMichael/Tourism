@@ -1,0 +1,9 @@
+﻿@using BookTourismWeb.Models
+@{
+    ViewBag.Title = "Tours By Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<TourSummaryModel> tours = ViewBag.indexTours;
+}
+
+@Html.Partial("~/Views/Shared/_TourSummaryView.cshtml", tours)
+
